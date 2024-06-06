@@ -9,220 +9,132 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      agent_settings: {
+      calories_records: {
         Row: {
-          agent_name: string | null
-          agent_personality: string | null
-          behavior_instructions: string | null
-          client_id: string
-          company_description: string | null
-          company_name: string | null
-          created_at: string
-          excluded_topics: string | null
-          id: number
-        }
-        Insert: {
-          agent_name?: string | null
-          agent_personality?: string | null
-          behavior_instructions?: string | null
-          client_id: string
-          company_description?: string | null
-          company_name?: string | null
-          created_at?: string
-          excluded_topics?: string | null
-          id?: number
-        }
-        Update: {
-          agent_name?: string | null
-          agent_personality?: string | null
-          behavior_instructions?: string | null
-          client_id?: string
-          company_description?: string | null
-          company_name?: string | null
-          created_at?: string
-          excluded_topics?: string | null
-          id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_agent_settings_client_id_fkey"
-            columns: ["client_id"]
-            isOneToOne: false
-            referencedRelation: "clients"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      chats: {
-        Row: {
-          chat_id: string
-          created_at: string
-          is_reply_enabled: boolean
-          listing_id: string
-          scrapped_at: string | null
-        }
-        Insert: {
-          chat_id: string
-          created_at?: string
-          is_reply_enabled?: boolean
-          listing_id: string
-          scrapped_at?: string | null
-        }
-        Update: {
-          chat_id?: string
-          created_at?: string
-          is_reply_enabled?: boolean
-          listing_id?: string
-          scrapped_at?: string | null
-        }
-        Relationships: []
-      }
-      clients: {
-        Row: {
-          created_at: string
+          count: number
+          from: string
           id: string
-          user_id: string | null
+          to: string
+          userId: string
         }
         Insert: {
-          created_at?: string
-          id: string
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string
+          count: number
+          from: string
           id?: string
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      documents: {
-        Row: {
-          content: string | null
-          embedding: string | null
-          id: number
-          metadata: Json | null
-        }
-        Insert: {
-          content?: string | null
-          embedding?: string | null
-          id?: number
-          metadata?: Json | null
+          to: string
+          userId?: string
         }
         Update: {
-          content?: string | null
-          embedding?: string | null
-          id?: number
-          metadata?: Json | null
-        }
-        Relationships: []
-      }
-      logs: {
-        Row: {
-          chat_id: string
-          client_id: string
-          created_at: string
-          id: number
-          is_conversation_resumed: boolean
-          is_notified: boolean
-          message_content: string | null
-          token: string
-        }
-        Insert: {
-          chat_id: string
-          client_id: string
-          created_at?: string
-          id?: number
-          is_conversation_resumed?: boolean
-          is_notified?: boolean
-          message_content?: string | null
-          token: string
-        }
-        Update: {
-          chat_id?: string
-          client_id?: string
-          created_at?: string
-          id?: number
-          is_conversation_resumed?: boolean
-          is_notified?: boolean
-          message_content?: string | null
-          token?: string
+          count?: number
+          from?: string
+          id?: string
+          to?: string
+          userId?: string
         }
         Relationships: [
           {
-            foreignKeyName: "public_logs_chat_id_fkey"
-            columns: ["chat_id"]
+            foreignKeyName: "calories_records_userId_fkey"
+            columns: ["userId"]
             isOneToOne: false
-            referencedRelation: "chats"
-            referencedColumns: ["chat_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "public_logs_client_id_fkey"
-            columns: ["client_id"]
-            isOneToOne: false
-            referencedRelation: "clients"
-            referencedColumns: ["id"]
-          }
         ]
       }
-      profiles: {
+      distance_records: {
         Row: {
-          contact_phone: string | null
-          created_at: string
-          id: number
-          user_id: string | null
+          count: number
+          from: string
+          id: string
+          to: string
+          userId: string
         }
         Insert: {
-          contact_phone?: string | null
-          created_at?: string
-          id?: number
-          user_id?: string | null
+          count: number
+          from: string
+          id?: string
+          to: string
+          userId?: string
         }
         Update: {
-          contact_phone?: string | null
-          created_at?: string
-          id?: number
-          user_id?: string | null
+          count?: number
+          from?: string
+          id?: string
+          to?: string
+          userId?: string
         }
         Relationships: [
           {
-            foreignKeyName: "public_profiles_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "distance_records_userId_fkey"
+            columns: ["userId"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
-      "uploaded-files": {
+      steps_records: {
         Row: {
-          created_at: string
-          id: number
-          mimetype: string
-          path: string
-          user_id: string
+          count: number
+          from: string
+          id: string
+          to: string
+          userId: string
         }
         Insert: {
-          created_at?: string
-          id?: number
-          mimetype: string
-          path: string
-          user_id?: string
+          count: number
+          from: string
+          id?: string
+          to: string
+          userId?: string
         }
         Update: {
-          created_at?: string
-          id?: number
-          mimetype?: string
-          path?: string
-          user_id?: string
+          count?: number
+          from?: string
+          id?: string
+          to?: string
+          userId?: string
         }
         Relationships: [
           {
-            foreignKeyName: "public_uploaded-files_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "setps_records_userId_fkey"
+            columns: ["userId"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
-          }
+          },
+        ]
+      }
+      user_profiles: {
+        Row: {
+          code: number | null
+          id: number
+          profileName: string | null
+          profilePicturePath: string | null
+          userId: string
+        }
+        Insert: {
+          code?: number | null
+          id?: number
+          profileName?: string | null
+          profilePicturePath?: string | null
+          userId?: string
+        }
+        Update: {
+          code?: number | null
+          id?: number
+          profileName?: string | null
+          profilePicturePath?: string | null
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_profiles_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
@@ -230,67 +142,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      hnswhandler: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      ivfflathandler: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      match_documents: {
-        Args: {
-          query_embedding: string
-          match_count?: number
-          filter?: Json
-        }
-        Returns: {
-          id: number
-          content: string
-          metadata: Json
-          similarity: number
-        }[]
-      }
-      vector_avg: {
-        Args: {
-          "": number[]
-        }
-        Returns: string
-      }
-      vector_dims: {
-        Args: {
-          "": string
-        }
-        Returns: number
-      }
-      vector_norm: {
-        Args: {
-          "": string
-        }
-        Returns: number
-      }
-      vector_out: {
-        Args: {
-          "": string
-        }
-        Returns: unknown
-      }
-      vector_send: {
-        Args: {
-          "": string
-        }
-        Returns: string
-      }
-      vector_typmod_in: {
-        Args: {
-          "": unknown[]
-        }
-        Returns: number
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
@@ -301,14 +153,16 @@ export type Database = {
   }
 }
 
+type PublicSchema = Database[Extract<keyof Database, "public">]
+
 export type Tables<
   PublicTableNameOrOptions extends
-    | keyof (Database["public"]["Tables"] & Database["public"]["Views"])
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
@@ -316,67 +170,67 @@ export type Tables<
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"] &
-      Database["public"]["Views"])
-  ? (Database["public"]["Tables"] &
-      Database["public"]["Views"])[PublicTableNameOrOptions] extends {
-      Row: infer R
-    }
-    ? R
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
     : never
-  : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-    | keyof Database["public"]["Tables"]
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
-  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Insert: infer I
-    }
-    ? I
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
     : never
-  : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-    | keyof Database["public"]["Tables"]
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
-  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Update: infer U
-    }
-    ? U
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
     : never
-  : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof Database["public"]["Enums"]
+    | keyof PublicSchema["Enums"]
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-    : never = never
+    : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
-  ? Database["public"]["Enums"][PublicEnumNameOrOptions]
-  : never
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never

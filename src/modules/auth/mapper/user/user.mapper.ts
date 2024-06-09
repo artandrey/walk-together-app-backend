@@ -5,7 +5,7 @@ import { IUser, IUserPayload } from '../../models/auth-domain.models';
 export class UserMapper {
   public domainToPayload(user: IUser): IUserPayload {
     return {
-      sid: user.id,
+      sub: user.id,
       email: user.email,
     };
   }

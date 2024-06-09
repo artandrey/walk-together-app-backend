@@ -4,6 +4,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ExceptionsModule } from './modules/exceptions/exceptions.module';
 import { UserModule } from './modules/user/user.module';
 import { RecordsModule } from './modules/records/records.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { RecordsModule } from './modules/records/records.module';
     ExceptionsModule,
     UserModule,
     RecordsModule,
+    ConfigModule.forRoot({ isGlobal: true }),
   ],
   providers: [],
 })

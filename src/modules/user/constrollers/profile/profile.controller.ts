@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Inject, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  ParseIntPipe,
+  Put,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { IUserProfileService } from '../../services/user-profile/user-profile-service.interface';
 import { Request } from 'express';
 import { UserProfileMapper } from '../../mapper/user-profile.mapper';
@@ -20,19 +29,24 @@ export class ProfileController {
     return this._profileMapper.toDto(result);
   }
 
-  @Post()
+  @Put()
   public async setProfile(
     @Req() req: Request,
     @Body() body: SetUserProfileDto,
   ) {
     const userId = req.user.id;
-    const profile = await this._profileService.getProfile(userId);
     const changed = this._profileMapper.toDomain(body);
-    const result = await this._profileService.setProfile(
-      userId,
-      this._profileMapper.joinChanges(profile, changed),
-    );
+    const result = await this._profileService.setProfile(userId, changed);
 
     return this._profileMapper.toDto(result);
+  }
+
+  @Get('/search')
+  public async searchProfile(
+    @Query('nickname') nickname: string,
+    @Query('code', ParseIntPipe) code: number,
+  ) {
+    const profile = await this._profileService.searchProfile(nickname, code);
+    return this._profileMapper.toDto(profile);
   }
 }

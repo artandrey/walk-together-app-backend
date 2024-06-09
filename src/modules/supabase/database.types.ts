@@ -109,21 +109,21 @@ export type Database = {
         Row: {
           code: number | null
           id: number
-          profileName: string | null
+          nickname: string | null
           profilePicturePath: string | null
           userId: string
         }
         Insert: {
           code?: number | null
           id?: number
-          profileName?: string | null
+          nickname?: string | null
           profilePicturePath?: string | null
           userId?: string
         }
         Update: {
           code?: number | null
           id?: number
-          profileName?: string | null
+          nickname?: string | null
           profilePicturePath?: string | null
           userId?: string
         }

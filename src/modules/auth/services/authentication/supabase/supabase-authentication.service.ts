@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { IAuthenticationService } from '../authentication-service.interface';
 import { SignInDto } from 'src/modules/auth/dto/sign-in/sign-in.dto';
 import { AuthenticationFailedException } from 'src/modules/auth/exceptions/authentication-failed/authentication-failed.exception';
 import { IUser } from 'src/modules/auth/models/auth-domain.models';
 import { Supabase } from 'src/modules/supabase/client/supabase';
+import { SUPABASE_CLIENT } from 'src/modules/supabase/constants';
 
 @Injectable()
 export class SupabaseAuthenticationService implements IAuthenticationService {
-  constructor(private readonly _supabase: Supabase) {}
+  constructor(@Inject(SUPABASE_CLIENT) private readonly _supabase: Supabase) {}
   async validateUser(email: string, password: string): Promise<IUser> {
     const client = this._supabase.getScopedClient();
     const { data, error } = await client.auth.signUp({ email, password });

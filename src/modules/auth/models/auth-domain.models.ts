@@ -4,6 +4,6 @@ export interface IUser {
 }
 
 export interface IUserPayload {
-  sid: string;
+  sub: string;
   email: string;
 }

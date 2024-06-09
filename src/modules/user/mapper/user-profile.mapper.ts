@@ -12,7 +12,7 @@ export class UserProfileMapper {
   toDomain(updateDto: SetUserProfileDto) {
     return plainToInstance(UserProfileModel, updateDto);
   }
-  joinChanges(current: UserProfileModel, updated: UserProfileModel) {
+  joinChanges(current: UserProfileModel, updated: Partial<UserProfileModel>) {
     return plainToInstance(UserProfileModel, {
       ...current,
       nickname: updated.nickname ?? current.nickname,

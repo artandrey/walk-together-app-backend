@@ -1,13 +1,16 @@
-import { IBaseRepository } from 'src/modules/supabase/repository/base-repository/base-repository.interface';
 import {
-  ICreateProfile,
-  IUpdateProfile,
+  INewUserProfile,
   IUserProfile,
-} from '../../entities/user-profiles.entity';
+} from 'src/modules/database/database-types';
+import { IBaseRepository } from 'src/modules/shared/base-repository/base-repository.interface';
 
 export interface IProfileRepository
   extends IBaseRepository<
-    { create: ICreateProfile; entity: IUserProfile; update: IUpdateProfile },
+    {
+      create: INewUserProfile;
+      entity: IUserProfile;
+      update: Partial<INewUserProfile>;
+    },
     number
   > {
   getProfilesByNickname(nickname: string): Promise<IUserProfile[]>;

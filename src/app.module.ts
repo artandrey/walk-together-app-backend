@@ -5,6 +5,8 @@ import { ExceptionsModule } from './modules/exceptions/exceptions.module';
 import { UserModule } from './modules/user/user.module';
 import { RecordsModule } from './modules/records/records.module';
 import { ConfigModule } from '@nestjs/config';
+import { DrizzlePostgresModule } from './modules/drizzle-postgres/drizzle-postgres.module';
+import * as schema from './modules/database/database-schema';
 
 @Module({
   imports: [
@@ -14,6 +16,13 @@ import { ConfigModule } from '@nestjs/config';
     UserModule,
     RecordsModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    DrizzlePostgresModule.forRoot({
+      schema,
+      db: {
+        connection: 'client',
+        config: {},
+      },
+    }),
   ],
   providers: [],
 })

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
-import { Database } from '../database.types';
 
 @Injectable()
 export class Supabase {
@@ -9,7 +8,7 @@ export class Supabase {
 
   constructor(private readonly configService: ConfigService) {}
 
-  getClient(): SupabaseClient<Database> {
+  getClient(): SupabaseClient {
     if (this.clientInstance) {
       return this.clientInstance;
     }
@@ -23,7 +22,7 @@ export class Supabase {
   }
 
   private getClientInstance() {
-    return createClient<Database>(
+    return createClient(
       this.configService.get('SUPABASE_URL'),
       this.configService.get('SUPABASE_KEY'),
       {

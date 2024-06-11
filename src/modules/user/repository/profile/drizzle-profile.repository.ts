@@ -1,10 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IProfileRepository } from './profile-repository.interface';
+import {
+  IProfileRepository,
+  IRecordsOptions,
+} from './profile-repository.interface';
 import { POSTGRES_DB } from 'src/modules/drizzle-postgres/constants';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DBSchema, INewUserProfile } from 'src/modules/database/database-types';
-import { and, eq } from 'drizzle-orm';
-import { userProfiles } from 'src/modules/database/database-schema';
+import { and, between, eq } from 'drizzle-orm';
+import {
+  caloriesRecords,
+  distanceRecords,
+  stepsRecords,
+  userProfiles,
+} from 'src/modules/database/database-schema';
 
 @Injectable()
 export class DrizzleProfileRepository implements IProfileRepository {
@@ -17,9 +25,58 @@ export class DrizzleProfileRepository implements IProfileRepository {
       where: eq(userProfiles.nickname, nickname),
     });
   }
-  findByUserId(userId: string) {
+  findByUserId(userId: string, recordsOptions?: IRecordsOptions) {
+    if (!recordsOptions) {
+      return this.db.query.userProfiles.findFirst({
+        where: eq(userProfiles.userId, userId),
+      });
+    }
     return this.db.query.userProfiles.findFirst({
       where: eq(userProfiles.userId, userId),
+      with: {
+        distanceRecords: {
+          where: and(
+            between(
+              distanceRecords.startTime,
+              recordsOptions.from,
+              recordsOptions.to,
+            ),
+            between(
+              distanceRecords.endTime,
+              recordsOptions.from,
+              recordsOptions.to,
+            ),
+          ),
+        },
+        stepsRecords: {
+          where: and(
+            between(
+              stepsRecords.startTime,
+              recordsOptions.from,
+              recordsOptions.to,
+            ),
+            between(
+              stepsRecords.endTime,
+              recordsOptions.from,
+              recordsOptions.to,
+            ),
+          ),
+        },
+        caloriesRecords: {
+          where: and(
+            between(
+              caloriesRecords.startTime,
+              recordsOptions.from,
+              recordsOptions.to,
+            ),
+            between(
+              caloriesRecords.endTime,
+              recordsOptions.from,
+              recordsOptions.to,
+            ),
+          ),
+        },
+      },
     });
   }
   findByNicknameAndCode(nickname: string, code: number) {

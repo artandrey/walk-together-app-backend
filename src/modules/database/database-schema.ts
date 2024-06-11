@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm';
 import {
   boolean,
+  doublePrecision,
   integer,
   pgSchema,
   pgTable,
@@ -19,28 +20,28 @@ export const users = adminSchema.table('users', {
 
 // Define the calories_records table
 export const caloriesRecords = pgTable('calories_records', {
-  count: integer('count').notNull(),
-  from: timestamp('from', { mode: 'date', withTimezone: true }).notNull(),
+  totalCaloriesBurned: doublePrecision('count').notNull(),
+  startTime: timestamp('from', { mode: 'date', withTimezone: true }).notNull(),
   id: uuid('id').primaryKey(),
-  to: timestamp('to', { mode: 'date', withTimezone: true }).notNull(),
+  endTime: timestamp('to', { mode: 'date', withTimezone: true }).notNull(),
   userId: uuid('userId').notNull(),
 });
 
 // Define the distance_records table
 export const distanceRecords = pgTable('distance_records', {
-  count: integer('count').notNull(),
-  from: timestamp('from', { mode: 'date', withTimezone: true }).notNull(),
+  distance: doublePrecision('count').notNull(),
+  startTime: timestamp('from', { mode: 'date', withTimezone: true }).notNull(),
   id: uuid('id').primaryKey(),
-  to: timestamp('to', { mode: 'date', withTimezone: true }).notNull(),
+  endTime: timestamp('to', { mode: 'date', withTimezone: true }).notNull(),
   userId: uuid('userId').notNull(),
 });
 
 // Define the steps_records table
 export const stepsRecords = pgTable('steps_records', {
   count: integer('count').notNull(),
-  from: timestamp('from', { mode: 'date', withTimezone: true }).notNull(),
+  startTime: timestamp('from', { mode: 'date', withTimezone: true }).notNull(),
   id: uuid('id').primaryKey(),
-  to: timestamp('to', { mode: 'date', withTimezone: true }).notNull(),
+  endTime: timestamp('to', { mode: 'date', withTimezone: true }).notNull(),
   userId: uuid('userId').notNull(),
 });
 
@@ -61,15 +62,12 @@ export const partnershipRecord = pgTable('partnership_records', {
   createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
 });
 
-export const userProfilesRelations = relations(
-  partnershipRecord,
-  ({ many }) => ({
-    partnerships: many(partnershipRecord),
-    distanceRecords: many(distanceRecords),
-    stepsRecords: many(stepsRecords),
-    userProfiles: many(userProfiles),
-  }),
-);
+export const userProfilesRelations = relations(userProfiles, ({ many }) => ({
+  partnerships: many(partnershipRecord),
+  distanceRecords: many(distanceRecords),
+  stepsRecords: many(stepsRecords),
+  caloriesRecords: many(caloriesRecords),
+}));
 
 export const caloriesRecordsRelations = relations(
   caloriesRecords,

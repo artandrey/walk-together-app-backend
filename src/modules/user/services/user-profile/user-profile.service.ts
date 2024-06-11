@@ -2,7 +2,10 @@ import { Inject } from '@nestjs/common';
 import { UserProfileModel } from '../../models/user-profile.model';
 import { IUserProfileService } from './user-profile-service.interface';
 import { PROFILE_REPOSITORY } from '../../constants';
-import { IProfileRepository } from '../../repository/profile/profile-repository.interface';
+import {
+  IProfileRepository,
+  IRecordsOptions,
+} from '../../repository/profile/profile-repository.interface';
 import { TooManyUsersWithSameNicknameException } from '../../exceptions/too-many-users-with-same-nickname.exception';
 import { UserProfileMapper } from '../../mapper/user-profile.mapper';
 import { UserProfileNotFoundException } from '../../exceptions/user-profile-not-found-exception';
@@ -14,11 +17,17 @@ export class UserProfileService implements IUserProfileService {
     private readonly profileMapper: UserProfileMapper,
   ) {}
 
-  public async getProfile(userId: string): Promise<UserProfileModel> {
-    const profilePersistance =
-      await this.profileRepository.findByUserId(userId);
+  public async getProfile(
+    userId: string,
+    includeRecords?: IRecordsOptions,
+  ): Promise<UserProfileModel> {
+    const profilePersistance = await this.profileRepository.findByUserId(
+      userId,
+      includeRecords,
+    );
     return profilePersistance;
   }
+
   public async setProfile(
     userId: string,
     updated: Partial<UserProfileModel>,
